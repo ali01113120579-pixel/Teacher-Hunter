@@ -1,31 +1,38 @@
 import type { YouTubeChannel } from "@/types/youtube";
 
-const EDUCATION_KEYWORDS_AR = ["مدرس", "مدرسة", "أستاذ", "معلم", "شرح", "ثانوية", "دروس", "تعليم", "منهج", "امتحان"];
-const EDUCATION_KEYWORDS_EN = ["teacher", "lesson", "lecture", "tutorial", "course", "class", "explained", "curriculum", "exam", "education", "school", "learn"];
-
 /**
- * Deterministic, keyword-based teacher-relevance estimate (0-100). Cheap
- * and fast — avoids an AI call per candidate (§22), which would be
- * wasteful for something this pattern-based.
+ * Generic niche-fit score (0-100). It compares the requested search terms
+ * with the channel's public title/description and adds light business/creator
+ * signals. It is deterministic, fast, and does not require an AI call.
  */
-export function estimateTeacherRelevance(channel: Pick<YouTubeChannel, "title" | "description">, query: string): number {
+export function estimateNicheRelevance(
+  channel: Pick<YouTubeChannel, "title" | "description">,
+  query: string,
+): number {
   const haystack = `${channel.title} ${channel.description}`.toLowerCase();
-  const keywords = [...EDUCATION_KEYWORDS_AR, ...EDUCATION_KEYWORDS_EN];
+  const queryTerms = query
+    .toLowerCase()
+    .split(/\s+/)
+    .map((term) => term.trim())
+    .filter((term) => term.length > 1);
 
-  let hits = 0;
-  for (const kw of keywords) {
-    if (haystack.includes(kw.toLowerCase())) hits++;
-  }
+  if (queryTerms.length === 0) return 0;
 
-  const queryTerms = query.toLowerCase().split(/\s+/).filter((t) => t.length > 1);
-  const queryHits = queryTerms.filter((t) => haystack.includes(t)).length;
-  const queryMatchRatio = queryTerms.length > 0 ? queryHits / queryTerms.length : 0;
+  const uniqueTerms = Array.from(new Set(queryTerms));
+  const hits = uniqueTerms.filter((term) => haystack.includes(term)).length;
+  const matchRatio = hits / uniqueTerms.length;
 
-  const keywordScore = Math.min(60, hits * 12);
-  const queryScore = Math.round(queryMatchRatio * 40);
+  const businessSignals = [
+    "contact", "whatsapp", "instagram", "business", "company", "brand", "shop", "store",
+    "تواصل", "واتساب", "انستجرام", "شركة", "براند", "متجر", "خدمات",
+  ];
+  const signalHits = businessSignals.filter((term) => haystack.includes(term)).length;
 
-  return Math.min(100, keywordScore + queryScore);
+  return Math.min(100, Math.round(matchRatio * 80) + Math.min(20, signalHits * 4));
 }
+
+// Backward-compatible alias for the existing database field and tests.
+export const estimateTeacherRelevance = estimateNicheRelevance;
 
 export function relevanceConfidenceLabel(score: number): "High confidence" | "Medium confidence" | "Low confidence" {
   if (score >= 70) return "High confidence";

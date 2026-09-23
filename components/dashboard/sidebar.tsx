@@ -23,7 +23,7 @@ export function DashboardSidebar() {
         <div className="flex size-7 items-center justify-center rounded-md bg-primary/15 text-primary">
           <Search className="size-4" />
         </div>
-        <span className="text-sm font-semibold">Teacher Hunter</span>
+        <span className="text-sm font-semibold">Client Hunter</span>
       </div>
 
       <nav className="flex flex-col gap-1">

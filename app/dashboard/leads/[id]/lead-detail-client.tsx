@@ -101,7 +101,7 @@ export function LeadDetailClient({ initialLead }: { initialLead: Lead }) {
             <Row label="Video count" value={lead.video_count} />
             <Row label="Recent activity" value={activityLabel(lead.last_video_at)} />
             <Row label="Avg. recent views" value={lead.average_recent_views?.toLocaleString() ?? null} />
-            <Row label="Teacher relevance" value={lead.teacher_relevance_score !== null ? `${lead.teacher_relevance_score}%` : null} />
+            <Row label="Niche fit" value={lead.teacher_relevance_score !== null ? `${lead.teacher_relevance_score}%` : null} />
             {lead.youtube_url && (
               <a href={lead.youtube_url} target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" size="sm" className="mt-2 w-full">

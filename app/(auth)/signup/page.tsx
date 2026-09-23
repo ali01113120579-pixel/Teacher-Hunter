@@ -20,7 +20,7 @@ export default function SignupPage() {
             <Search className="size-5" />
           </div>
           <h1 className="text-lg font-semibold">Create your account</h1>
-          <p className="text-sm text-muted-foreground">Start finding teachers to design thumbnails for.</p>
+          <p className="text-sm text-muted-foreground">Start finding clients for your creative services.</p>
         </div>
 
         <form action={formAction} className="flex flex-col gap-4">

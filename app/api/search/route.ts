@@ -24,11 +24,18 @@ export async function POST(request: Request) {
   }
 
   try {
-    const results = await runSearch(parsed.data.query, parsed.data.filters);
+    const effectiveQuery = [
+      parsed.data.filters?.service,
+      parsed.data.filters?.niche,
+      parsed.data.filters?.country,
+      parsed.data.query,
+    ].filter(Boolean).join(" ");
+
+    const results = await runSearch(effectiveQuery, parsed.data.filters);
 
     await supabase.from("searches").insert({
       user_id: user.id,
-      query: parsed.data.query,
+      query: effectiveQuery,
       filters: parsed.data.filters ?? {},
       results_count: results.length,
     });
@@ -48,6 +55,7 @@ export async function POST(request: Request) {
         total_view_count: lead.totalViewCount,
         last_video_at: lead.lastVideoAt,
         average_recent_views: lead.averageRecentViews,
+        // Legacy column name; this value is now generic niche-fit relevance.
         teacher_relevance_score: lead.teacherRelevanceScore,
         contact_score: lead.scoreBreakdown.contact,
         lead_score: lead.leadScore,

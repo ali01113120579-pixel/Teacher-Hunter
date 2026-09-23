@@ -35,12 +35,12 @@ export default async function DashboardHomePage() {
         <h1 className="text-xl font-semibold">
           {greeting}{profile?.name ? `, ${profile.name}` : ""} 👋
         </h1>
-        <p className="text-sm text-muted-foreground">Find your next thumbnail client.</p>
+        <p className="text-sm text-muted-foreground">Find your next client.</p>
       </div>
 
       <Link href="/dashboard/search">
         <Button variant="outline" className="w-full justify-start sm:w-auto sm:min-w-80">
-          <Search className="size-4" /> Search teachers...
+          <Search className="size-4" /> Find clients...
         </Button>
       </Link>
 
@@ -61,7 +61,7 @@ export default async function DashboardHomePage() {
       </div>
 
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-muted-foreground">🔥 Top Opportunities</h2>
+        <h2 className="text-sm font-medium text-muted-foreground">🔥 Top Client Opportunities</h2>
         {total > 0 && <ExportButton />}
       </div>
 

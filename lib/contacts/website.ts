@@ -65,7 +65,7 @@ function isPrivateHostname(hostname: string): boolean {
 
 /**
  * Discovers public contact info from a small, fixed set of pages on a
- * teacher's own website (§18: never crawl the whole site).
+ * lead's own website (§18: never crawl the whole site).
  */
 export async function discoverWebsiteContacts(websiteUrl: string): Promise<ContactInfo[]> {
   let base: URL;

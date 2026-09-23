@@ -1,6 +1,6 @@
 export interface SearchFilters {
-  subject?: string;
-  educationLevel?: string;
+  service?: string;
+  niche?: string;
   country?: string;
   minSubscribers?: number;
 }

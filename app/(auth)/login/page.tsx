@@ -19,7 +19,7 @@ export default function LoginPage() {
           <div className="flex size-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
             <Search className="size-5" />
           </div>
-          <h1 className="text-lg font-semibold">Teacher Hunter</h1>
+          <h1 className="text-lg font-semibold">Client Hunter</h1>
           <p className="text-sm text-muted-foreground">Sign in to find your next thumbnail client.</p>
         </div>
 

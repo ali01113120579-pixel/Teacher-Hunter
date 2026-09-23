@@ -40,7 +40,7 @@ export async function GET() {
   return new NextResponse(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="teacher-hunter-leads-${new Date().toISOString().slice(0, 10)}.csv"`,
+      "Content-Disposition": `attachment; filename="client-hunter-leads-${new Date().toISOString().slice(0, 10)}.csv"`,
     },
   });
 }

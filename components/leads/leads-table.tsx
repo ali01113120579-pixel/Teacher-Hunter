@@ -12,12 +12,12 @@ export function LeadsTable({ leads }: { leads: Lead[] }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Teacher</TableHead>
+            <TableHead>Lead</TableHead>
             <TableHead>YouTube</TableHead>
             <TableHead>Subscribers</TableHead>
             <TableHead>Activity</TableHead>
             <TableHead>Contact</TableHead>
-            <TableHead>Thumbnail Opp.</TableHead>
+            <TableHead>Design Opp.</TableHead>
             <TableHead>Lead Score</TableHead>
             <TableHead />
           </TableRow>

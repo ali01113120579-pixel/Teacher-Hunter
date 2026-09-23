@@ -10,9 +10,9 @@ export default function Home() {
       </div>
 
       <div className="flex max-w-lg flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Teacher Hunter</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Client Hunter</h1>
         <p className="text-sm text-muted-foreground">
-          Search YouTube for teachers and educational creators, find their public business
+          Find potential clients across niches and discover public business contacts
           contacts, and rank them by how strong an opportunity they are for thumbnail design work.
         </p>
       </div>

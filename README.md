@@ -1,6 +1,6 @@
-# Teacher Hunter
+# Client Hunter
 
-Lead-discovery tool for finding teacher/educational YouTube creators as
+Lead-discovery tool for finding client/educational YouTube creators as
 thumbnail-design clients. All 14 phases from the product spec are
 implemented — see `ARCHITECTURE.md`, `DATABASE.md`, `API.md`,
 `SECURITY.md`, `YOUTUBE.md` for details on each part.

@@ -11,10 +11,43 @@ import { LeadsTable } from "@/components/leads/leads-table";
 import { LeadCard } from "@/components/leads/lead-card";
 import type { Lead } from "@/types/lead";
 
-const LOADING_STEPS = ["Searching YouTube...", "Analyzing channels...", "Checking public contact information...", "Calculating lead scores..."];
+const SERVICES = [
+  "Graphic Design",
+  "Social Media Design",
+  "Thumbnails",
+  "Video Editing",
+  "Motion Graphics",
+  "Branding",
+  "Web Design",
+];
+
+const NICHES = [
+  "Teachers",
+  "Doctors",
+  "Restaurants",
+  "Real Estate",
+  "E-commerce",
+  "Clothing Brands",
+  "Coaches",
+  "YouTubers",
+  "Podcasters",
+  "Gyms",
+  "Agencies",
+  "Startups",
+];
+
+const LOADING_STEPS = [
+  "Searching YouTube...",
+  "Finding relevant creators and businesses...",
+  "Checking public contact information...",
+  "Calculating client opportunity scores...",
+];
 
 export function SearchClient() {
   const router = useRouter();
+  const [service, setService] = useState("Graphic Design");
+  const [niche, setNiche] = useState("Teachers");
+  const [country, setCountry] = useState("Egypt");
   const [query, setQuery] = useState("");
   const [minSubscribers, setMinSubscribers] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,8 +57,8 @@ export function SearchClient() {
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    if (!query.trim()) return;
 
+    const finalQuery = query.trim() || `${niche} ${country}`;
     setLoading(true);
     setError(null);
     setResults(null);
@@ -37,8 +70,13 @@ export function SearchClient() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          query,
-          filters: minSubscribers ? { minSubscribers: Number(minSubscribers) } : undefined,
+          query: finalQuery,
+          filters: {
+            service,
+            niche,
+            country,
+            ...(minSubscribers ? { minSubscribers: Number(minSubscribers) } : {}),
+          },
         }),
       });
       const data = await res.json();
@@ -61,21 +99,43 @@ export function SearchClient() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold">Find Teachers</h1>
-        <p className="text-sm text-muted-foreground">Search YouTube for teachers and educational creators worth pitching.</p>
+        <h1 className="text-xl font-semibold">Find Clients</h1>
+        <p className="text-sm text-muted-foreground">Choose what you sell and who you want to work with.</p>
       </div>
 
-      <form onSubmit={handleSearch} className="flex flex-col gap-3">
+      <form onSubmit={handleSearch} className="flex flex-col gap-4">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="text-muted-foreground">Service</span>
+            <select value={service} onChange={(e) => setService(e.target.value)} className="h-10 rounded-md border border-input bg-background px-3">
+              {SERVICES.map((item) => <option key={item}>{item}</option>)}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="text-muted-foreground">Niche</span>
+            <select value={niche} onChange={(e) => setNiche(e.target.value)} className="h-10 rounded-md border border-input bg-background px-3">
+              {NICHES.map((item) => <option key={item}>{item}</option>)}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="text-muted-foreground">Country</span>
+            <Input value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Egypt" />
+          </label>
+        </div>
+
         <div className="relative">
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="مدرس عربي ثانوية عامة مصر"
+            placeholder="Optional: Cairo restaurants, Egyptian math teachers..."
             className="pl-9"
             dir="auto"
           />
         </div>
+
         <div className="flex flex-col gap-3 sm:flex-row">
           <Input
             type="number"
@@ -85,9 +145,9 @@ export function SearchClient() {
             placeholder="Minimum subscribers (optional)"
             className="sm:max-w-xs"
           />
-          <Button type="submit" disabled={loading || !query.trim()} className="sm:ml-auto">
+          <Button type="submit" disabled={loading} className="sm:ml-auto">
             {loading ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
-            Search Teachers
+            Find Clients
           </Button>
         </div>
       </form>
@@ -110,26 +170,18 @@ export function SearchClient() {
       {results && !loading && results.length === 0 && (
         <Card>
           <CardContent className="p-6 text-sm text-muted-foreground">
-            <p className="mb-2 font-medium text-foreground">No suitable teachers found.</p>
-            Try:
-            <ul className="mt-1 list-inside list-disc">
-              <li>a broader subject</li>
-              <li>another education level</li>
-              <li>removing the subscriber filter</li>
-              <li>using Arabic or English keywords</li>
-            </ul>
+            <p className="mb-2 font-medium text-foreground">No good client leads found.</p>
+            Try a broader niche, remove the subscriber filter, or use a custom search query.
           </CardContent>
         </Card>
       )}
 
       {results && results.length > 0 && !loading && (
         <div className="flex flex-col gap-3">
-          <p className="text-sm text-muted-foreground">{results.length} teachers found, ranked by lead score.</p>
+          <p className="text-sm text-muted-foreground">{results.length} potential clients found, ranked by opportunity.</p>
           <LeadsTable leads={results} />
           <div className="flex flex-col gap-3 md:hidden">
-            {results.map((lead) => (
-              <LeadCard key={lead.id} lead={lead} />
-            ))}
+            {results.map((lead) => <LeadCard key={lead.id} lead={lead} />)}
           </div>
         </div>
       )}

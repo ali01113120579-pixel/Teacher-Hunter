@@ -10,7 +10,7 @@ export function DashboardTopbar({ email }: { email: string | null }) {
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between border-b border-border px-4 md:px-6">
-      <span className="text-sm text-muted-foreground md:hidden">Teacher Hunter</span>
+      <span className="text-sm text-muted-foreground md:hidden">Client Hunter</span>
       <div className="ml-auto flex items-center gap-3">
         <span className="hidden text-sm text-muted-foreground sm:inline">{email}</span>
         <Avatar>

@@ -1,12 +1,11 @@
-/** Lead scoring model — mirrors the 100-point breakdown in the product spec. */
-
+/** Lead scoring model. The teacherRelevance key is kept in the DB for compatibility; it now represents niche fit. */
 export interface ScoreBreakdown {
   [key: string]: number;
-  audience: number; // 0-30
-  activity: number; // 0-20
-  teacherRelevance: number; // 0-15
-  contact: number; // 0-20
-  thumbnailOpportunity: number; // 0-15
+  audience: number;
+  activity: number;
+  teacherRelevance: number;
+  contact: number;
+  thumbnailOpportunity: number;
 }
 
 export interface ContactInfo {
@@ -17,7 +16,7 @@ export interface ContactInfo {
 }
 
 export interface ThumbnailAnalysis {
-  score: number; // 0-100
+  score: number;
   strengths: string[];
   weaknesses: string[];
   opportunities: string[];

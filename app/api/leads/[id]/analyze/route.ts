@@ -64,7 +64,7 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
     const { breakdown } = scoreLead({
       subscriberCount: lead.subscriber_count,
       lastVideoAt: lead.last_video_at,
-      teacherRelevance: lead.teacher_relevance_score ?? 0,
+      nicheRelevance: lead.teacher_relevance_score ?? 0,
       contacts: [],
       thumbnailOpportunity: analysis,
     });

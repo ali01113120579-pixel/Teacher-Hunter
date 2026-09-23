@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const searchFiltersSchema = z.object({
-  subject: z.string().trim().max(120).optional(),
-  educationLevel: z.string().trim().max(120).optional(),
+  service: z.string().trim().max(120).optional(),
+  niche: z.string().trim().max(120).optional(),
   country: z.string().trim().max(120).optional(),
   minSubscribers: z.coerce.number().int().min(0).max(100_000_000).optional(),
 });

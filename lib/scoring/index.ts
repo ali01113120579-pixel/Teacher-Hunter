@@ -9,9 +9,11 @@ export { activityLabel } from "./activity";
 export interface ScoreLeadInput {
   subscriberCount: number | null;
   lastVideoAt: string | Date | null;
-  teacherRelevance: number; // 0-100, scaled to 15 internally
+  nicheRelevance?: number;
+  /** @deprecated compatibility with existing tests/database terminology. */
+  teacherRelevance?: number;
   contacts: ContactInfo[];
-  thumbnailOpportunity: ThumbnailAnalysis | null; // 0-100, scaled to 15 internally
+  thumbnailOpportunity: ThumbnailAnalysis | null;
 }
 
 export interface ScoreLeadResult {
@@ -19,18 +21,27 @@ export interface ScoreLeadResult {
   breakdown: ScoreBreakdown;
 }
 
-/** §22-23: full 100-point lead score with breakdown, ready to explain. */
+/** Generic 100-point client opportunity score. */
 export function scoreLead(input: ScoreLeadInput): ScoreLeadResult {
   const audience = scoreAudience(input.subscriberCount);
   const activity = scoreActivity(input.lastVideoAt);
-  const teacherRelevance = Math.round((input.teacherRelevance / 100) * 15);
+  const relevance = input.nicheRelevance ?? input.teacherRelevance ?? 0;
+  const nicheRelevance = Math.round((relevance / 100) * 15);
   const contact = scoreContact(input.contacts);
   const thumbnailOpportunity = input.thumbnailOpportunity
     ? Math.round((input.thumbnailOpportunity.score / 100) * 15)
     : 0;
 
-  const breakdown: ScoreBreakdown = { audience, activity, teacherRelevance, contact, thumbnailOpportunity };
-  const leadScore = audience + activity + teacherRelevance + contact + thumbnailOpportunity;
+  const breakdown: ScoreBreakdown = {
+    audience,
+    activity,
+    teacherRelevance: nicheRelevance,
+    contact,
+    thumbnailOpportunity,
+  };
 
-  return { leadScore, breakdown };
+  return {
+    leadScore: audience + activity + nicheRelevance + contact + thumbnailOpportunity,
+    breakdown,
+  };
 }

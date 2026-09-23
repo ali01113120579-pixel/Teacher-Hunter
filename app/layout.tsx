@@ -3,8 +3,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "Teacher Hunter",
-  description: "Find teachers and educational YouTube creators worth pitching for thumbnail design.",
+  title: "Client Hunter",
+  description: "Find potential clients worth pitching for your creative services.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
